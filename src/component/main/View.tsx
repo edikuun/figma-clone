@@ -1,6 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import LeftPanel from './sections/left-panel';
 import MainCanvas from './sections/main-canvas';
+import RightPanel from './sections/right-panel';
 import { IProperty } from '.';
 
 const Main = ({
@@ -29,12 +30,7 @@ const Main = ({
         />
       </Col>
       <Col className="Right-Panel">
-        <div className="mb-4 fw-bold">Right Panel</div>
-        <div>Position: {selectedComponent?.position} </div>
-        <div>Top: {selectedComponent?.top} </div>
-        <div>Bottom: {selectedComponent?.bottom} </div>
-        <div>Left: {selectedComponent?.left} </div>
-        <div>Right: {selectedComponent?.right}</div>
+        <RightPanel selectedComponent={selectedComponent} />
       </Col>
     </Row>
   </Container>
