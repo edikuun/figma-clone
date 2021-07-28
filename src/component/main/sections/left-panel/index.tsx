@@ -1,11 +1,6 @@
 import { Fragment } from 'react';
 import { Nav } from 'react-bootstrap';
-
-interface IComponent {
-  name: string;
-  description: string;
-}
-
+import { IComponent } from '../../index';
 interface IPanelProps {
   componentList: IComponent[];
   onSelectComponent: (componentName: string) => void;

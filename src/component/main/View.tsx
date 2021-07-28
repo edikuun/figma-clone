@@ -2,7 +2,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import LeftPanel from './sections/left-panel';
 import MainCanvas from './sections/main-canvas';
 import RightPanel from './sections/right-panel';
-import { IProperty } from '.';
+import { IComponent } from '.';
 
 const Main = ({
   componentList,
@@ -10,10 +10,10 @@ const Main = ({
   onClickComponent,
   selectedComponent,
 }: {
-  componentList: any[];
+  componentList: IComponent[];
   onSelectComponent: (componentName: string) => void;
   onClickComponent: (event: any, componentName: string) => void;
-  selectedComponent: IProperty | null | undefined;
+  selectedComponent: IComponent | null | undefined;
 }) => (
   <Container className="Main" fluid>
     <Row className="Row">

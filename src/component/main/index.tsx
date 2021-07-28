@@ -14,9 +14,15 @@ export interface IProperty {
 
 interface IProps {}
 
+export interface IComponent {
+  name: string;
+  description?: string;
+  properties?: IProperty;
+}
+
 interface IState {
-  componentList: any[];
-  selectedComponent?: IProperty | null;
+  componentList: IComponent[];
+  selectedComponent?: IComponent | null;
 }
 
 export default class index extends Component<IProps, IState> {
@@ -47,7 +53,7 @@ export default class index extends Component<IProps, IState> {
     if (prevState.selectedComponent !== this.state.selectedComponent) {
       const cards = document.getElementsByClassName('Card');
       Array.from(cards).forEach((card: any) => {
-        if (this.state.selectedComponent?.componentName !== card.id) {
+        if (this.state.selectedComponent?.name !== card.id) {
           card.style.backgroundColor = null;
         }
       });
@@ -69,18 +75,21 @@ export default class index extends Component<IProps, IState> {
     // update element boundaries
     this.setState({
       selectedComponent: {
-        componentName,
-        position,
-        top: Number(top).toFixed(2),
-        bottom: Number(window.innerHeight - top - element.offsetHeight).toFixed(
-          2
-        ),
-        left: Number(left).toFixed(2),
-        right: Number(window.innerWidth - left - element.offsetWidth).toFixed(
-          2
-        ),
-        height: element.offsetHeight,
-        width: element.offsetWidth,
+        name: componentName,
+        properties: {
+          componentName,
+          position,
+          top: Number(top).toFixed(2),
+          bottom: Number(
+            window.innerHeight - top - element.offsetHeight
+          ).toFixed(2),
+          left: Number(left).toFixed(2),
+          right: Number(window.innerWidth - left - element.offsetWidth).toFixed(
+            2
+          ),
+          height: element.offsetHeight,
+          width: element.offsetWidth,
+        },
       },
     });
   };
