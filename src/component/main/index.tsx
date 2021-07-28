@@ -3,7 +3,7 @@ import './index.scss';
 import View from './View';
 export interface IProperty {
   bottom?: string | undefined;
-  componentName: string;
+  componentName?: string;
   height?: string | number;
   left?: string | undefined;
   position?: string;
@@ -46,6 +46,25 @@ export default class index extends Component<IProps, IState> {
       ],
       selectedComponent: null,
     };
+  }
+
+  // sets the height and width of the cards on load
+  componentDidMount() {
+    let newComponentList = [...this.state.componentList];
+    const cards = document.getElementsByClassName('Card');
+    Array.from(cards).forEach((card: any) => {
+      const height = card.offsetHeight;
+      const width = card.offsetWidth;
+      const cardIndex = newComponentList.findIndex(
+        (component) => component.name === card.id
+      );
+
+      newComponentList[cardIndex] = {
+        ...this.state.componentList[cardIndex],
+        properties: { height, width },
+      };
+    });
+    this.setState({ componentList: newComponentList });
   }
   componentDidUpdate(prevProps: IProps, prevState: IState) {
     // this process loops through all card component ensuring that their backgroundColor is
