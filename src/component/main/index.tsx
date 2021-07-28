@@ -1,15 +1,17 @@
 import { Component } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import LeftPanel from '../ui/left-panel';
+import LeftPanel from './sections/left-panel';
 import './index.scss';
 
 interface IProperty {
+  bottom?: string | undefined;
   componentName: string;
-  position: string;
-  top: string;
-  bottom: string;
-  left: string;
-  right: string;
+  height?: string | number;
+  left?: string | undefined;
+  position?: string;
+  right?: string | undefined;
+  top?: string | undefined;
+  width?: string | number;
 }
 
 interface IProps {}
@@ -59,22 +61,28 @@ export default class index extends Component<IProps, IState> {
    * @param element
    */
   setSelectedComponent = (element: any, componentName: string) => {
-    const { position, height, width } = window.getComputedStyle(element);
+    const { position } = window.getComputedStyle(element);
 
+    const { top, left } = element.getBoundingClientRect();
+
+    // set backgroundColor highlight when selected
     element.style.backgroundColor = 'lightblue';
 
+    // update element boundaries
     this.setState({
       selectedComponent: {
         componentName,
-        position: `${position} px`,
-        top: `${window.pageYOffset + element.getBoundingClientRect().top} px`,
-        bottom: `${
-          window.pageYOffset + element.getBoundingClientRect().bottom
-        } px`,
-        left: `${window.pageXOffset + element.getBoundingClientRect().left} px`,
-        right: `${
-          window.pageXOffset + element.getBoundingClientRect().right
-        } px`,
+        position,
+        top: Number(top).toFixed(2),
+        bottom: Number(window.innerHeight - top - element.offsetHeight).toFixed(
+          2
+        ),
+        left: Number(left).toFixed(2),
+        right: Number(window.innerWidth - left - element.offsetWidth).toFixed(
+          2
+        ),
+        height: element.offsetHeight,
+        width: element.offsetWidth,
       },
     });
   };
@@ -115,7 +123,7 @@ export default class index extends Component<IProps, IState> {
               onSelectComponent={this.onSelectComponent}
             />
           </Col>
-          <Col className="Canvas" xs={8}>
+          <Col id="canvas" className="Canvas" xs={8}>
             <div className="mb-4">Main Canvas</div>
             <Row className="mx-auto">
               {this.state.componentList.map(({ name, description }, index) => (
