@@ -48,8 +48,8 @@ export default class index extends Component<IProps, IState> {
     };
   }
 
-  // sets the height and width of the cards on load
   componentDidMount() {
+    // sets the height and width of the cards on load
     let newComponentList = [...this.state.componentList];
     const cards = document.getElementsByClassName('Card');
     Array.from(cards).forEach((card: any) => {
@@ -66,6 +66,7 @@ export default class index extends Component<IProps, IState> {
     });
     this.setState({ componentList: newComponentList });
   }
+
   componentDidUpdate(prevProps: IProps, prevState: IState) {
     // this process loops through all card component ensuring that their backgroundColor is
     // set to default once they are deselected
@@ -85,7 +86,6 @@ export default class index extends Component<IProps, IState> {
    */
   setSelectedComponent = (element: any, componentName: string) => {
     const { position } = window.getComputedStyle(element);
-
     const { top, left } = element.getBoundingClientRect();
 
     // set backgroundColor highlight when selected
@@ -113,12 +113,6 @@ export default class index extends Component<IProps, IState> {
     });
   };
 
-  onDeselectComponent = () => {
-    this.setState({
-      selectedComponent: null,
-    });
-  };
-
   /**
    * Sets the current element based on the component name selected
    * @param componentName
@@ -138,6 +132,10 @@ export default class index extends Component<IProps, IState> {
     this.setSelectedComponent(element, componentName);
   };
 
+  /**
+   * This function retrieves all the values to be passed down as props
+   * @returns
+   */
   getProps = () => {
     return {
       componentList: this.state.componentList,
