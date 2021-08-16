@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import './index.scss';
 import View from './View';
+
+import { DEFAULT_COMPONENT_LIST } from '../main/constants';
 export interface IProperty {
   bottom?: string | undefined;
   componentName?: string;
@@ -30,20 +32,7 @@ export default class index extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      componentList: [
-        {
-          name: 'Component One',
-          description: 'This is component one',
-        },
-        {
-          name: 'Component Two',
-          description: 'This is component two',
-        },
-        {
-          name: 'Component Three',
-          description: 'This is component three',
-        },
-      ],
+      componentList: DEFAULT_COMPONENT_LIST,
       selectedComponent: null,
     };
   }

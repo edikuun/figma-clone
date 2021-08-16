@@ -2,6 +2,8 @@ import { Fragment } from 'react';
 import { IComponent } from '../../index';
 import { Card, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
+import { DEFAULT_CARD_IMAGE } from '../../constants';
+
 const MainCanvas = ({
   componentList,
   onClickComponent,
@@ -30,10 +32,7 @@ const MainCanvas = ({
               onClick={(event) => onClickComponent(event, name)}
               style={{ width: '18rem' }}
             >
-              <Card.Img
-                variant="top"
-                src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cmFuZG9tfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80"
-              />
+              <Card.Img variant="top" src={DEFAULT_CARD_IMAGE} />
               <Card.Body>
                 <Card.Title>{name}</Card.Title>
                 <Card.Text>{description}</Card.Text>
