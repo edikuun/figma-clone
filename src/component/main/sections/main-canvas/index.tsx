@@ -17,7 +17,7 @@ const MainCanvas = ({
 }) => {
   const compList = componentList.map(
     ({ name, description, properties }: IComponent, index) => (
-      <Col className="mb-5">
+      <Col className="mb-5" key={index}>
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250, hide: 400 }}

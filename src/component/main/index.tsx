@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import './index.scss';
 import View from './View';
 
@@ -27,20 +27,16 @@ const MainComponent: FC = () => {
     null
   );
 
-  const newComponents = useMemo(
-    () => DEFAULT_COMPONENT_LIST as IComponent[],
-    []
-  );
-
   useEffect(() => {
-    setComponentList(convertComponent(newComponents));
-  }, [newComponents]);
+    setComponentList(convertComponent(DEFAULT_COMPONENT_LIST));
+  }, []);
 
   useEffect(() => {
     const cards = document.getElementsByClassName(
       'Card'
     ) as HTMLCollectionOf<HTMLDivElement>;
-    Array.from(cards).forEach((card) => {
+
+    Array.from(cards).forEach((card: HTMLDivElement) => {
       if (selectedComponent?.name !== card.id) {
         card.style.backgroundColor = '';
       }
