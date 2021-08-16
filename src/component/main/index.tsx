@@ -96,23 +96,29 @@ const MainComponent: FC = () => {
    * Chosses the current element based on the component name selected
    * @param componentName
    */
-  const onChooseComponent = (componentName: string) => {
-    const element = document.getElementById(componentName);
+  const onChooseComponent = useCallback(
+    (componentName: string) => {
+      const element = document.getElementById(componentName);
 
-    onSelectComponent(element, componentName);
-  };
+      onSelectComponent(element, componentName);
+    },
+    [onSelectComponent]
+  );
 
   /**
    * Sets the current element based on the component clicked
    * @param event
    */
-  const onClickComponent = (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    componentName: string
-  ) => {
-    const { currentTarget: element } = event;
-    onSelectComponent(element, componentName);
-  };
+  const onClickComponent = useCallback(
+    (
+      event: React.MouseEvent<HTMLElement, MouseEvent>,
+      componentName: string
+    ) => {
+      const { currentTarget: element } = event;
+      onSelectComponent(element, componentName);
+    },
+    [onSelectComponent]
+  );
 
   /**
    * This function retrieves all the values to be passed down as props
