@@ -37,10 +37,12 @@ const MainComponent: FC = () => {
   }, [newComponents]);
 
   useEffect(() => {
-    const cards = document.getElementsByClassName('Card');
-    Array.from(cards).forEach((card: any) => {
+    const cards = document.getElementsByClassName(
+      'Card'
+    ) as HTMLCollectionOf<HTMLDivElement>;
+    Array.from(cards).forEach((card) => {
       if (selectedComponent?.name !== card.id) {
-        card.style.backgroundColor = null;
+        card.style.backgroundColor = '';
       }
     });
   }, [selectedComponent]);
@@ -104,7 +106,10 @@ const MainComponent: FC = () => {
    * Sets the current element based on the component clicked
    * @param event
    */
-  const onClickComponent = (event: any, componentName: string) => {
+  const onClickComponent = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    componentName: string
+  ) => {
     const { currentTarget: element } = event;
     onSelectComponent(element, componentName);
   };

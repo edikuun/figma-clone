@@ -10,7 +10,10 @@ const MainCanvas = ({
   onClickComponent,
 }: {
   componentList: IComponent[];
-  onClickComponent: (event: any, componentName: string) => void;
+  onClickComponent: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    componentName: string
+  ) => void;
 }) => {
   const compList = componentList.map(
     ({ name, description, properties }: IComponent, index) => (

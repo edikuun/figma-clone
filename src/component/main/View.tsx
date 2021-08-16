@@ -12,7 +12,10 @@ const Main = ({
 }: {
   componentList: IComponent[];
   onChooseComponent: (componentName: string) => void;
-  onClickComponent: (event: any, componentName: string) => void;
+  onClickComponent: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    componentName: string
+  ) => void;
   selectedComponent: IComponent | null | undefined;
 }) => (
   <Container className="Main" fluid>
