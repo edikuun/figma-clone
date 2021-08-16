@@ -6,12 +6,12 @@ import { IComponent } from '.';
 
 const Main = ({
   componentList,
-  onSelectComponent,
+  onChooseComponent,
   onClickComponent,
   selectedComponent,
 }: {
   componentList: IComponent[];
-  onSelectComponent: (componentName: string) => void;
+  onChooseComponent: (componentName: string) => void;
   onClickComponent: (event: any, componentName: string) => void;
   selectedComponent: IComponent | null | undefined;
 }) => (
@@ -20,7 +20,7 @@ const Main = ({
       <Col className="Left-Panel">
         <LeftPanel
           componentList={componentList}
-          onSelectComponent={onSelectComponent}
+          onChooseComponent={onChooseComponent}
         />
       </Col>
       <Col id="canvas" className="Canvas" xs={8}>

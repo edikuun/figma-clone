@@ -1,8 +1,9 @@
-import { Component } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import './index.scss';
 import View from './View';
 
 import { DEFAULT_COMPONENT_LIST } from '../main/constants';
+import { convertComponent } from '../main/utils';
 export interface IProperty {
   bottom?: string | undefined;
   componentName?: string;
@@ -14,127 +15,114 @@ export interface IProperty {
   width?: string | number;
 }
 
-interface IProps {}
-
 export interface IComponent {
   name: string;
   description?: string;
   properties?: IProperty;
 }
 
-interface IState {
-  componentList: IComponent[];
-  selectedComponent?: IComponent | null;
-}
+const MainComponent: FC = () => {
+  const [componentList, setComponentList] = useState<IComponent[]>([]);
+  const [selectedComponent, setSelectedComponent] = useState<IComponent | null>(
+    null
+  );
 
-export default class index extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
+  const newComponents = useMemo(
+    () => DEFAULT_COMPONENT_LIST as IComponent[],
+    []
+  );
 
-    this.state = {
-      componentList: DEFAULT_COMPONENT_LIST,
-      selectedComponent: null,
-    };
-  }
+  useEffect(() => {
+    setComponentList(convertComponent(newComponents));
+  }, [newComponents]);
 
-  componentDidMount() {
-    // sets the height and width of the cards on load
-    let newComponentList = [...this.state.componentList];
+  useEffect(() => {
     const cards = document.getElementsByClassName('Card');
     Array.from(cards).forEach((card: any) => {
-      const height = card.offsetHeight;
-      const width = card.offsetWidth;
-      const cardIndex = newComponentList.findIndex(
-        (component) => component.name === card.id
-      );
-
-      newComponentList[cardIndex] = {
-        ...this.state.componentList[cardIndex],
-        properties: { height, width },
-      };
+      if (selectedComponent?.name !== card.id) {
+        card.style.backgroundColor = null;
+      }
     });
-    this.setState({ componentList: newComponentList });
-  }
-
-  componentDidUpdate(prevProps: IProps, prevState: IState) {
-    // this process loops through all card component ensuring that their backgroundColor is
-    // set to default once they are deselected
-    if (prevState.selectedComponent !== this.state.selectedComponent) {
-      const cards = document.getElementsByClassName('Card');
-      Array.from(cards).forEach((card: any) => {
-        if (this.state.selectedComponent?.name !== card.id) {
-          card.style.backgroundColor = null;
-        }
-      });
-    }
-  }
+  }, [selectedComponent]);
 
   /**
    * Sets the the current selected element in the state
    * @param element
    */
-  setSelectedComponent = (element: any, componentName: string) => {
-    const { position } = window.getComputedStyle(element);
-    const { top, left } = element.getBoundingClientRect();
+  const onSelectComponent = useCallback(
+    (element: HTMLElement | null, componentName: string) => {
+      // do nothing when element is null
+      if (!element) {
+        return;
+      }
 
-    // set backgroundColor highlight when selected
-    element.style.backgroundColor = 'lightblue';
+      const { position } = window.getComputedStyle(element);
+      const { top, left } = element.getBoundingClientRect();
 
-    // update element boundaries
-    this.setState({
-      selectedComponent: {
+      // set backgroundColor highlight when selected
+      element.style.backgroundColor = 'lightblue';
+
+      const bottom = Number(
+        window.innerHeight - top - element.offsetHeight
+      ).toFixed(2);
+      const right = Number(
+        window.innerWidth - left - element.offsetWidth
+      ).toFixed(2);
+
+      const height = element.offsetHeight;
+      const width = element.offsetWidth;
+
+      // update element boundaries
+      setSelectedComponent({
         name: componentName,
         properties: {
           componentName,
           position,
-          top: Number(top).toFixed(2),
-          bottom: Number(
-            window.innerHeight - top - element.offsetHeight
-          ).toFixed(2),
-          left: Number(left).toFixed(2),
-          right: Number(window.innerWidth - left - element.offsetWidth).toFixed(
-            2
-          ),
-          height: element.offsetHeight,
-          width: element.offsetWidth,
+          top: top.toFixed(2),
+          bottom,
+          left: left.toFixed(2),
+          right,
+          height,
+          width,
         },
-      },
-    });
-  };
+      });
+    },
+    [setSelectedComponent]
+  );
 
   /**
-   * Sets the current element based on the component name selected
+   * Chosses the current element based on the component name selected
    * @param componentName
    */
-  onSelectComponent = (componentName: string) => {
+  const onChooseComponent = (componentName: string) => {
     const element = document.getElementById(componentName);
 
-    this.setSelectedComponent(element, componentName);
+    onSelectComponent(element, componentName);
   };
 
   /**
    * Sets the current element based on the component clicked
    * @param event
    */
-  onClickComponent = (event: any, componentName: string) => {
+  const onClickComponent = (event: any, componentName: string) => {
     const { currentTarget: element } = event;
-    this.setSelectedComponent(element, componentName);
+    onSelectComponent(element, componentName);
   };
 
   /**
    * This function retrieves all the values to be passed down as props
    * @returns
    */
-  getProps = () => {
+  const getProps = () => {
     return {
-      componentList: this.state.componentList,
-      onSelectComponent: this.onSelectComponent,
-      onClickComponent: this.onClickComponent,
-      selectedComponent: this.state.selectedComponent,
+      componentList,
+      onChooseComponent,
+      onClickComponent,
+      selectedComponent,
     };
   };
 
-  render() {
-    return <View {...this.getProps()} />;
-  }
-}
+  return <View {...getProps()} />;
+};
+
+export default MainComponent;
